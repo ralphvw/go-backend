@@ -16,7 +16,7 @@ const (
 	migrationsDir = "file://./migrations"
 )
 
-func InitDb() {
+func InitDb() (*sql.DB) {
 	var err error
 	db, err := sql.Open("postgres", dbConnectionString)
 
@@ -36,6 +36,8 @@ func InitDb() {
 	if err := applyMigrations(); err != nil {
         log.Fatal(err)
     }
+
+	return db
 
 }
 
