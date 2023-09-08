@@ -1,0 +1,3 @@
+**Installing migrations cli**
+go get -tags 'postgres' -u github.com/golang-migrate/migrate/v4/cmd/migrate
+
