@@ -1,18 +1,19 @@
 package services
 
 import (
-    "fmt"
-    "net/http"
-    "time"
 	"database/sql"
+	"fmt"
+	"net/http"
+	"os"
+	"time"
 
-    "github.com/dgrijalva/jwt-go"
-    "github.com/gin-gonic/gin"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
 
 
-var jwtSecret = []byte("your-secret-key")
+var jwtSecret = []byte(os.Getenv("SECRET_KEY"))
 
 type User struct {
     ID       int    `json:"id"`

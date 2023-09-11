@@ -89,19 +89,3 @@ func GetSingleDataHandler(c *gin.Context, db *sql.DB, query string, args []inter
 
     c.JSON(http.StatusOK, responseData)
 }
-
-//Example call
-    /* Call GetSingleDataHandler to retrieve user data with multiple query arguments
-    var user User
-    query := "SELECT id, name, age FROM users WHERE id = $1 AND department = $2"
-    userID := 123     // Replace with the desired user's ID
-    userDepartment := "HR" // Replace with the desired department
-
-    // Call GetSingleDataHandler with the query, query arguments, and destination variables
-    GetSingleDataHandler(c, db, query, []interface{}{userID, userDepartment}, &user.ID, &user.Name, &user.Age)
-
-    // Now 'user' variable contains the retrieved user data
-    fmt.Println("User ID:", user.ID)
-    fmt.Println("User Name:", user.Name)
-    fmt.Println("User Age:", user.Age)
-	*/
