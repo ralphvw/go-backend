@@ -4,21 +4,27 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
+
 	"github.com/golang-migrate/migrate/v4"
-    _ "github.com/golang-migrate/migrate/v4/database/postgres"
-    _ "github.com/golang-migrate/migrate/v4/source/file"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/joho/godotenv"
 )
 
 var db *sql.DB
 
 const (
-	dbConnectionString = "postgresql://postgres:admin@localhost:5432/goTest"
 	migrationsDir = "file://./migrations"
 )
 
 func InitDb() (*sql.DB) {
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading env file")
+	}
+	
 	var err error
-	db, err := sql.Open("postgres", dbConnectionString)
+	db, err := sql.Open("postgres", os.Getenv("DB_URL"))
 
 	if err != nil {
 		log.Fatal(err)
@@ -42,7 +48,7 @@ func InitDb() (*sql.DB) {
 }
 
 func applyMigrations() error {
-    m, err := migrate.New(migrationsDir, dbConnectionString)
+    m, err := migrate.New(migrationsDir, os.Getenv("DB_URL"))
     if err != nil {
         return err
     }
