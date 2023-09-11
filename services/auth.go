@@ -58,7 +58,7 @@ func LoginHandler(c *gin.Context, db *sql.DB) {
 
 
 func authenticateUser(db *sql.DB, email string, password string) (*User, error) {
-    query := "SELECT id, email, hash FROM users WHERE username = $1"
+    query := "SELECT id, email, hash FROM users WHERE email = $1"
     row := db.QueryRow(query, email)
 
     var user User
