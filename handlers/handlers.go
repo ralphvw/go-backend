@@ -9,7 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
 func GetDataHandler(c *gin.Context, db *sql.DB, pageSize, page int, query string, countQuery string, args []interface{}, destinations ...interface{}) {
 	offset := (page - 1) * pageSize
 
@@ -64,28 +63,27 @@ func GetDataHandler(c *gin.Context, db *sql.DB, pageSize, page int, query string
 	c.JSON(http.StatusOK, responseData)
 }
 
-
 func GetSingleDataHandler(c *gin.Context, db *sql.DB, query string, args []interface{}, destinations ...interface{}) {
-    row := db.QueryRow(query, args...)
+	row := db.QueryRow(query, args...)
 
-    if err := row.Scan(destinations...); err != nil {
-        log.Fatal(err)
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
-        return
-    }
+	if err := row.Scan(destinations...); err != nil {
+		log.Fatal(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
+	}
 
-    responseData := gin.H{}
-    for i := 0; i < len(destinations); i += 2 {
-        key, ok := destinations[i].(string)
-        if !ok {
-            log.Fatal("Invalid key type")
-            c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
-            return
-        }
+	responseData := gin.H{}
+	for i := 0; i < len(destinations); i += 2 {
+		key, ok := destinations[i].(string)
+		if !ok {
+			log.Fatal("Invalid key type")
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+			return
+		}
 
-        value := destinations[i+1]
-        responseData[key] = value
-    }
+		value := destinations[i+1]
+		responseData[key] = value
+	}
 
-    c.JSON(http.StatusOK, responseData)
+	c.JSON(http.StatusOK, responseData)
 }

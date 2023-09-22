@@ -12,24 +12,21 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var db *sql.DB
-
 const (
-	migrationsDir = "file://./migrations"
+	migrationsDir = "file://./db/migrations"
 )
 
-func InitDb() (*sql.DB) {
+func InitDb() *sql.DB {
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Error loading env file")
 	}
-	
+
 	var err error
 	db, err := sql.Open("postgres", os.Getenv("DB_URL"))
 
 	if err != nil {
 		log.Fatal(err)
 	}
-
 
 	err = db.Ping()
 
@@ -40,22 +37,22 @@ func InitDb() (*sql.DB) {
 	fmt.Println("Db connected successfully")
 
 	if err := applyMigrations(); err != nil {
-        log.Fatal(err)
-    }
+		log.Fatal(err)
+	}
 
 	return db
 
 }
 
 func applyMigrations() error {
-    m, err := migrate.New(migrationsDir, os.Getenv("DB_URL"))
-    if err != nil {
-        return err
-    }
+	m, err := migrate.New(migrationsDir, os.Getenv("DB_URL"))
+	if err != nil {
+		return err
+	}
 
-    if err := m.Up(); err != nil && err != migrate.ErrNoChange {
-        return err
-    }
+	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
+		return err
+	}
 
-    return nil
+	return nil
 }
