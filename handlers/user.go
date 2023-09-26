@@ -53,7 +53,7 @@ func CreateUser(c *gin.Context, db *sql.DB) {
 }
 
 func GetAllUsers(c *gin.Context, db *sql.DB) {
-	query := "SELECT id, first_name, last_name FROM users"
+	query := "SELECT id, first_name, FROM users"
 	countQuery := "SELECT COUNT(*) FROM users"
 	var id int
 	var name string
